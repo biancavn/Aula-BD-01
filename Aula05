@@ -150,4 +150,7 @@ FROM REGISTRO_NOTA NATURAL JOIN ALUNO; -- o banco de dados entende que estou com
  -- union varias consultas em uma só A% - exibe os que começam com A
  -- count conta quantidade de linhas, posso especificar por atributo ou contar do todo
  -- linhas nulas entram no calculo
+-- posso apelidar as tabelas para facilitar as consultas
+select * FROM Funcionario F inner join 
+Telefone T on F.CPF = T.CPF -- USO O APELIDO PARA FAZER A COMPARAÇÃO O QUE ME PERMITI DIGITAR MENOS !!
  
