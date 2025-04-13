@@ -125,6 +125,9 @@ WHERE ALUNO.Curso=CURSO.Numero_curso AND
       CURSO.Numero_departamento=DEPARTAMENTO.Numero_departamento
 ORDER BY DEPARTAMENTO.Nome; -- ordenar por departamento
 
+-- muitos dados são repetidos por ex curso entaão podemos fazer a distinção usando o distinct
+-- select distinct curso from aluno; só vai aparecer cada curso uma única vez
+
 -- SELECT ALUNO.Nome as "Nome do aluno", ALUNO.CURSO =  CURSO.Numero_curso, REGISTRO_NOTA as "Nota", DEPARTAMENTO.Nome as "Nome do departamento"
 -- FROM ALUNO, CURSO, REGISTRO_NOTA, DEPARTAMENTO
 -- WHERE REGISTRO_NOTA 
