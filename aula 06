@@ -3,7 +3,6 @@
 -- Isto não será necessário se você estiver usando o OneCompiler.
 DROP TABLE IF EXISTS DEPARTAMENTO, CURSO, PROFESSOR, ALUNO, DISCIPLINA, TURMA, PRE_REQUISITO, REGISTRO_NOTA;
 
-
 -- Criando a tabela DEPARTAMENTO
 CREATE TABLE DEPARTAMENTO(
   Nome VARCHAR(50) NOT NULL UNIQUE, -- Chave candidata
@@ -121,47 +120,74 @@ INSERT INTO REGISTRO_NOTA (Numero_aluno, Identificador_turma, Nota) VALUES
 -- aluno -> curso -> departamento
 SELECT ALUNO.Nome as "Nome do aluno", DEPARTAMENTO.Nome as "Nome do departamento" -- organização que darei para o código -- forma de exibicção
 FROM ALUNO, CURSO, DEPARTAMENTO
-WHERE ALUNO.Curso=CURSO.Numero_curso AND
-      CURSO.Numero_departamento=DEPARTAMENTO.Numero_departamento
+WHERE ALUNO.Curso=CURSO.Numero_curso AND   -- where limita quais atributos eu quero ver
+      CURSO.Numero_departamento=DEPARTAMENTO.Numero_departamento -- posso usar com AND ou OR ou NOT ou >, <, <=, >=, = , <>
 ORDER BY DEPARTAMENTO.Nome; -- ordenar por departamento
 
 -- muitos dados são repetidos por ex curso entaão podemos fazer a distinção usando o distinct
 -- select distinct curso from aluno; só vai aparecer cada curso uma única vez
 
--- SELECT ALUNO.Nome as "Nome do aluno", ALUNO.CURSO =  CURSO.Numero_curso, REGISTRO_NOTA as "Nota", DEPARTAMENTO.Nome as "Nome do departamento"
--- FROM ALUNO, CURSO, REGISTRO_NOTA, DEPARTAMENTO
--- WHERE REGISTRO_NOTA 
--- deus tenha piedade - tentar fazer o desafio 
+-- select nota*10 from aluno; -- exibe a nota *10(mas não altera no banco de dados)
+
+SELECT 
+    ALUNO.Nome AS "Nome do aluno",
+    REGISTRO_NOTA.Nota,
+    DEPARTAMENTO.Nome AS "Nome do departamento",
+    TURMA.Identificador_turma
+FROM
+    ALUNO, CURSO, DEPARTAMENTO, REGISTRO_NOTA, TURMA
+WHERE
+    ALUNO.Curso = CURSO.Numero_curso AND
+    CURSO.Numero_departamento = DEPARTAMENTO.Numero_departamento AND
+    ALUNO.Numero_aluno = REGISTRO_NOTA.Numero_aluno AND
+    REGISTRO_NOTA.Identificador_turma = TURMA.Identificador_turma
+ORDER BY DEPARTAMENTO.Nome;
 
 -- JOIN!!
-SELECT ALUNO.Nome AS "NOME", REGISTRO_NOTA.Nota as "Nota" -- tentar fazer com where
+SELECT ALUNO.Nome AS "NOME", REGISTRO_NOTA.Nota as "Nota" 
 FROM REGISTRO_NOTA NATURAL JOIN ALUNO; -- o banco de dados entende que estou comparando os dados que possuem o mesmo nome em uma tabela
  
  select PROFESSOR.Nome, DEPARTAMENTO.Nome 
  FROM PROFESSOR JOIN DEPARTAMENTO USING (Numero_departamento); -- uso o join using quando possuo atributos com o mesmo nome (por isso que geralmente nao uso so id uso id_departamento)
  -- caso aconteça de ter o mesmo nome para os dois atributos usa o using
+ -- ESCOLHO UM Terceiro atributo para guiar essa busca
  
  -- JOIN ON - SEMELHANTE AO WHERE  EU INDICO QUAIS VALORES ESTOU COMPARANDO
  SELECT ALUNO.Nome, CURSO.Nome
- FROM ALUNO JOIN CURSO ON (ALUNO.Curso = CURSO.Numero); -- uso o = para indicar que esses dois valores
+ FROM ALUNO JOIN CURSO ON (ALUNO.Curso = CURSO.Numero_CURSO); -- uso o = para indicar que esses dois valores
  -- de nomes diferentes remetem a mesma coisa (mesmo valor, quero compara-los)
  
  INSERT IGNORE INTO DEPARTAMENTO(Nome,Numero_departamento)
  VALUES ('Departamento de Tecnologia da Informação', 0); -- fazendo o select não vai aparecer 
  -- pois não está ligado a nenhum professor, usa um inner join - ou seja só pesquisas em tabelas "casadas"alter
  
+ -- o join sozinho ignora linhas sem dados entao
  -- para pesqusiar em tabelas solteiras uso:
- -- RIGHT JOIN // OUTER JOIN
+ -- RIGHT JOIN // OUTER JOIN -- se tiver dado faltano a direita é right join
+ -- se tiver dado faltando a esquerda é left join 
+ -- posso usar o resto dos comandos natural, using e etc naturalmente 
+ -- FROM PROFESSOR RIGHT JOIN DEPARTAMENTO USING(NUMERO_DEPARTAMENTO)
  -- caso não tenha conexão entre tabelas - o dado necessário fica null
  
- -- BETWEEN  PEGO VALORES ENTRE (os valores sao inclusos)alter
+ -- BETWEEN  PEGO VALORES ENTRE (os valores sao inclusos):
+ 
+ select* FROM REGISTRO_NOTA WHERE NOTA BETWEEN 8 AND 10;
+ 
  -- union varias consultas em uma só A% - exibe os que começam com A
+ (SELECT * FROM ALUNO WHERE NOME LIKE "A%") UNION (SELECT * FROM ALUNO WHERE NOME LIKE "B%");
+ 
+ --        MINIMO   MEDIA       MAX       SOMA
+ SELECT MIN(NOTA), AVG(NOTA), MAX(NOTA), SUM(NOTA) FROM REGISTRO_NOTA;
  -- count conta quantidade de linhas, posso especificar por atributo ou contar do todo
+ select curso, count(*) from aluno group by curso;
+ -- GROUP BY JUNTA OS DADOS que tem o mesmo valor
+-- por ex curso - junta todos e exibe apenas uma vez o curso
  -- linhas nulas entram no calculo
+
 -- posso apelidar as tabelas para facilitar as consultas
-select * FROM Funcionario F inner join 
-Telefone T on F.CPF = T.CPF -- USO O APELIDO PARA FAZER A COMPARAÇÃO O QUE ME PERMITI DIGITAR MENOS !!
- -- UNIQUE(A1,A2,A3) -- todos esses valores serão unique
+-- select * FROM Funcionario F inner join 
+-- Telefone T on F.CPF = T.CPF -- USO O APELIDO PARA FAZER A COMPARAÇÃO O QUE ME PERMITI DIGITAR MENOS !!
+ -- UNIQUE(A1,A2,A3) -- todos esses valores serão unicos
  -- natural join combina duas relações com atributos de mesmo nome 
  -- join using - me deixa especificar qual atributo quero usar para juntar as tabelas
  -- join on -- permite juntar atributos de nomes diferentes com (A1=A2 - digo quais atributos serão iguais)
@@ -171,7 +197,7 @@ Telefone T on F.CPF = T.CPF -- USO O APELIDO PARA FAZER A COMPARAÇÃO O QUE ME 
  -- SÓ consigo inserir na tabela se os atributos seguirem essa restrição 
  -- CHECK(Creditos>=2) - só insiro se tiver 2 creditos ou mais  OU USO ALTER TABLE
  -- se eu tentar inserir uma tabela de um credito vai dar um erro de resstrição
- -- se já existirem registros que não seguem essa regra ai vai dar erro ao adicionar
+ -- se já existirem registros que não seguem essa regra ai vai dar erro ao adicionar o check
  
  -- INCREMENTAÇÃO AUTOMÁTICA --
  -- Serve muito para ID - começa do 1 e vai incrementando
@@ -191,14 +217,22 @@ Telefone T on F.CPF = T.CPF -- USO O APELIDO PARA FAZER A COMPARAÇÃO O QUE ME 
  -- update aluno set Tipo_aluno = 'M' where numero_aluno =550; 
  -- updeito manualmente
  -- where aluno = 'P' -- mudaria de TODOS os alunos que são P
- -- Só funciona se eu tiver set sql_safe_updates = 0; -- desativo osafe mode
- -- revisar parte do where
+ -- Só funciona se eu tiver set sql_safe_updates = 0; -- desativo o safe mode
+
  -- para alterar a primary key e foreign key preciso mudar para tipo normal (int e afins)
  -- e ai dropa primary key
+ -- alter table secretario modify id_secretario INT; -- mudei para tipo normal
+ -- alter table secretario drop primary key -- dropo primary key
+
+
  -- para saber quais as restrições presentes nas tabelas: 
- -- ANOTAR
+-- select CONSTRAINT_NAME 
+-- FROM INFORMATION_SCHEMA.TABLE_CONTRAINTS
+-- WHERE TAABLE_NAME = "NOME DA TABELA QUE QUERO SABER";
  
+ -- integridade referencial da FOREIGN KEY!!!!
+--  por vezes associamos as tabelas e as vezes as apagamos e geramos erros de dados por isso ao criar chaves estrangeiras usamos:
  -- ON delete cascade - propaga a exclusão se eu apagar  o departamento 10 vai apagar todos os alunos, prof, cursos que possuem o 10
+ -- EX: ASSOCIO UM CLIENTE AO PEDIDO COMO CHAVE ESTRANGEIRA SE EU APAGAR O CLIENTE APAGO TODOS OS PEDIDOS ASSOCIADOS A ELE
  -- on update cascade - propaga a atualização da mesma forma de exclusão  se eu mudar departamento de 101 para 1001 vai atualizar em todos
  -- que tivessem 101 
- -- ESTUDAR COMO APLICAR E COM O FUNCIONA!!
