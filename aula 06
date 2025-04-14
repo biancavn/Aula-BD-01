@@ -236,3 +236,29 @@ FROM REGISTRO_NOTA NATURAL JOIN ALUNO; -- o banco de dados entende que estou com
  -- EX: ASSOCIO UM CLIENTE AO PEDIDO COMO CHAVE ESTRANGEIRA SE EU APAGAR O CLIENTE APAGO TODOS OS PEDIDOS ASSOCIADOS A ELE
  -- on update cascade - propaga a atualização da mesma forma de exclusão  se eu mudar departamento de 101 para 1001 vai atualizar em todos
  -- que tivessem 101 
+ 
+ -- AULA 14/04
+ 
+ -- DATE: ano-mes-dia 
+ -- time: hora do dia hora:minuto:segundo
+ -- timestamp: tem a data e a hora (mistura os dois anteriores)
+ -- text: textos muito grandes
+ -- blob: qualquer dado que não for caractere - ex:fotos
+ ALTER TABLE PROFESSOR
+ ADD Data_contratacao DATE default "2020-01-02", -- coloquei uma valor padrão para que os anteriores não fiquem nulos
+ ADD Biografia text; -- como ele é um tipo muito caro - o mysql não permite que coloque um valor padrão
+ 
+ -- o min/max e afins não da para usar com where where(min x) GERA ERRO!
+ -- tenho que fazer a consulta dentro do where
+ -- WHERE Numero_professor=(SELECT MIN(Numero_professor) FROM PROFESSOR)
+ 
+ -- View - maneira de salvar a expressão da consulta 
+ -- posso criar uma view para que o usuário só visualize o que eu selecionar para ele
+ -- create view melhor_nota as 
+ -- select nome, nota from aluno natural join registro_nota
+ -- where Nota = (SELECT MAX(Nota) FROM REGISTRO_NOTA);
+ -- ADICIONO APENAS ESSA PRIMEIRA LINHA PARA ARMAZENAR A CONSULTA
+ -- CREATE OR REPLACE VIEW FAÇO AS ALTERAÇÕES NECESSÁRIAS - nao consigo alterar entao tenho que usar esse comando para reescrever
+ -- create table x like y -- crio a tabela y com os mesmo atributos da tabela x (com a mesma estrutura)
+ -- create table as  - salvo os resultados da pesquisa - nao só a pesquisa mas a pesquisa + resultado
+ -- se eu quiser atualizar essa tabela eu precisaria recria-la (adicionar um novo aluno) - só rodar novamente não seria suficiente teria que atualizar
