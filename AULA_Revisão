@@ -1,1 +1,42 @@
 AULA DE REVISÃOOOOOOOOOOOOOOOOOOOOOO
+questões: 
+ANSI/SPARC -> outro nome para arquitetura de trÊs esquemas (REVISAR) 
+LER TEORIA DE SGBD!!!
+QUESTÕES QUE COLOCAM TOTALMENTE - GERALMENTE ESTÃO ERRADAS!!
+
+O SGBD não busca evitar a abstração do bd
+ele quer que seja abstrato
+
+o SGBD - isola o usuarios do banco de dados dos detalhes de nivel de hardware
+
+Coleção de dados inter relacionados  - banco de dados
+
+oracle, sql, server, db2 -> SGBD
+
+NIVEL interno -> hardware do computador
+nivel conceitual -> nivel no qual nos programadores trabalhamos
+nivel externo -> como o usuário vê o BD
+
+instância -> estado do banco de dados (muda o tempo todo)
+esquema -> conjunto de regras que forma o BD (não muda com frequência)
+
+independia de dados fisica -> permite que modifique os dados sem modificar o esquema
+                              e permite também modificar os dados sem mudar a visão do usuário
+
+nivel conceitual X modelo conceitual -> não são a mesma coisa
+modelo conceitual -> fazemos no UML (desenho e planejamento) - nao necessariamente preciso especificar as chaves primarias e estrangeiras - na hora de
+construir os bancos eu especifico
+
+detalhes de armazenamento interno das informações -> presente no modelo fisico
+SGBD-> podem ter formas diferentes de armazenar os dados
+estruturas internas do SGBD -> parte de salvamento dos arquivos - como será salvo no hardware (HD)
+
+insert nao pode inserir se quebrar regras de integridade
+from -> mesmo que eu for usar um left join - digo qual será a tabela "mais usada" from x e ai faço as ligações
+
+Código - soma todas as vezes que um competidos apareceu no azul e no verde - vai eliminar da tabela azul  os usuarios que apareceram mais no lado verde - questao de código
+ - c.nome = c.azul and c.nome = c.verde --- nao volta nenhuma linha pois nenhum competidor lutou contra ele mesmo
+
+restrição de dominio - defino tipo, minimo e maximo dos valores que pode ter
+
+ESTUDAR INNER JOIN E LEFT JOIN
