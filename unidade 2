@@ -1,0 +1,41 @@
+INICIO DA SEGUNDA UNIDADE:
+
+-- CONTEÚDO mais para concurso // não usamos/ mexemos com frequencia
+
+ALGEBRA RELACIONAL:
+
+Linguagem de consulta é uma linguagem por meio da qual o usuário solicita informações ao banco de dados
+procedurais ou não 
+
+Algebra relacional:  linguagem formal para modelo relacional
+
+porque aprender? 
+- concursos
+
+OPERAÇÕES: 
+ unárias(mexo com uma única tabela): 
+    seleção: seleciona subconjunto das tuplas que satisfaça certa condição - pega todos os atributos mas só algumas tuplas - partição horizontal, 
+    projeção: seleciona alguns atributos da tabela com todos os valores (coloca todos os valores sem alguns atributos)- seria uma partição vertical, 
+select nome from aluno (não uso where) exibo todos os valores
+    renomeação: renomeação de tabela ou atributo
+rename table aluno to estudante; (maioria dos sgbd traduzem isso automaticamente)
+   
+mexo com duas ou mais tabelas: 
+    união: une resultado de duas consultas (operação union), 
+    diferença de conjuntos: oq tem na expressão 1 que nao tem na expressão 2 (faço -),
+as duas relações PRECISAM ter os mesmos atributos se não não dará certo
+no mysql nao tem essa operação propriamente dita - preciso criam view!!
+    produtos cartesianos: misturo duas tabelas (as tabelas não precisam ser compativeis!! não precisam ter nenhum atributo em comum)
+select atributos from nomes tabelas; OU MUITO PESADA
+select atributos from tabela cross join tabela; -- melhor capacidade de processamento
+
+OUTRAS OPERAÇÕES: 
+interseção: encontrar valores em comum em duas tuplas
+nao disponivel no sql (intersect)
+junção natural: ???
+atribuição: dar nome a um resultado (seria semelhante a criar uma view)
+
+calculo relacional não ta no escopo do curso ela só fala brevenmente sobre
+
+procedural: descreve o que fiz
+não procedural: não precisa de tanta descrição
